@@ -1,0 +1,183 @@
+[project]
+name = "quantitative-derivatives-research-toolkit"
+version = "0.1.0"
+description = "A comparative study of analytical and numerical methods for derivative pricing."
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+    { name = "Dylan Herdan" },
+]
+
+
+dependencies = [
+    "matplotlib>=3.10",
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "scipy>=1.14",
+]
+
+[dependency-groups]
+dev = [
+    "poethepoet>=0.48.0",
+    "pre-commit>=4.6.0",
+    "pytest>=9.1.1",
+    "pytest-cov>=6.0",
+    "ruff>=0.15.21",
+    "ty>=0.0.58",
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.uv]
+package = true
+prerelease = "allow"
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/derivative_pricing"]
+
+
+# -----------------------------------------------------------------------------
+# Poe tasks
+# -----------------------------------------------------------------------------
+
+[tool.poe.tasks]
+format = "ruff format ."
+
+lint = { shell = """
+    ruff check .
+    ty check
+""" }
+
+fix = { shell = """
+    ruff check . --fix
+    ruff format .
+""" }
+
+test = "pytest"
+
+test-cov = { shell = """
+    pytest \
+        --cov=derivative_pricing \
+        --cov-report=term-missing \
+        --cov-report=html
+""" }
+
+check = { sequence = [
+    "format",
+    "lint",
+    "test",
+] }
+
+
+# -----------------------------------------------------------------------------
+# Ruff
+# -----------------------------------------------------------------------------
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+src = ["src", "tests"]
+force-exclude = true
+extend-exclude = [
+    "experiments",
+    "docs",
+    "report",
+]
+
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # import sorting
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "SIM",    # flake8-simplify
+    "N",      # naming conventions
+    "RUF",    # Ruff-specific rules
+]
+ignore = [
+    "E501",   # line length handled by Ruff formatter
+]
+
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101",   # permit assert statements in tests
+]
+
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
+
+
+# -----------------------------------------------------------------------------
+# ty
+# -----------------------------------------------------------------------------
+
+[tool.ty.src]
+include = [
+    "src",
+    "tests",
+]
+exclude = [
+    "experiments",
+    "docs",
+    "report",
+]
+
+
+[tool.ty.rules]
+all = "error"
+
+# -----------------------------------------------------------------------------
+# pytest
+# -----------------------------------------------------------------------------
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+    "--strict-config",
+    "--strict-markers",
+    "-ra",
+]
+markers = [
+    "unit: fast isolated unit tests",
+    "integration: tests involving multiple components",
+    "benchmark: performance and convergence tests",
+]
+
+
+# -----------------------------------------------------------------------------
+# Coverage
+# -----------------------------------------------------------------------------
+
+[tool.coverage.run]
+branch = true
+source = ["derivative_pricing"]
+
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 90
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]
