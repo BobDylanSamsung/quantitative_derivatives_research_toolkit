@@ -3,7 +3,7 @@ from math import exp, log, sqrt
 from scipy.stats import norm
 
 from derivative_pricing.models.market import MarketData
-from derivative_pricing.models.options import EuropeanOption
+from derivative_pricing.models.options import EuropeanOption, OptionType
 
 
 class BlackScholesModel:
@@ -14,6 +14,16 @@ class BlackScholesModel:
     ) -> None:
         self.option = option
         self.market = market
+
+    @property
+    def price(self) -> float:
+        match self.option.type:
+            case OptionType.CALL:
+                return self.calculate_call()
+            case OptionType.PUT:
+                return self.calculate_put()
+            case _:
+                raise ValueError(f"Unsupported option type: {self.option.type}")
 
     def calculate_call(self) -> float:
         """Calculate the Black-Scholes price of a European call option."""
