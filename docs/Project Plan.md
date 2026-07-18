@@ -43,16 +43,13 @@ By project completion I should be able to:
 
 # Project Timeline
 
-| Sprint | Theme | Duration | Estimated Hours |
-|---------|---------|---------|----------------:|
-| Sprint 1 | Foundations & Black-Scholes | 1 week | 12–15 |
-| Sprint 2 | Binomial Trees | 1 week | 10–12 |
-| Sprint 3 | Monte Carlo Simulation | 1 week | 10–12 |
-| Sprint 4 | Experimental Research | 1 week | 10–12 |
-| Sprint 5 | Library Engineering | 1 week | 8–10 |
-| Sprint 6 | Documentation & Publication | 1 week | 8–10 |
-
-**Total Estimated Effort:** **60–90 hours**
+| Sprint | Theme |
+|---------|---------|
+| Sprint 1 | Foundations & Black-Scholes |
+| Sprint 2 | Binomial Trees |
+| Sprint 3 | Monte Carlo Simulation |
+| Sprint 4 | Experimental Research |
+| Sprint 5 | Library Engineering |
 
 ---
 
@@ -288,72 +285,17 @@ Estimated Time
 
 ## Goal
 
-Turn the implementations into a genuine research project.
-
+Apply the pricing toolkit to real market data by recovering implied volatilities, constructing a volatility smile or surface, and investigating deviations from the constant-volatility Black–Scholes model.
 ---
 
-### Tickets
+## Deliverables
 
-## QR-12 Pricing Accuracy Study
-
-Investigate
-
-- Absolute error
-- Relative error
-
-Estimated Time
-
-**2 hours**
-
----
-
-## QR-13 Runtime Comparison
-
-Investigate
-
-- Runtime
-- Scaling
-- Complexity
-
-Estimated Time
-
-**2 hours**
-
----
-
-## QR-14 Volatility Sensitivity
-
-Investigate
-
-How option price changes as volatility increases.
-
-Estimated Time
-
-**2 hours**
-
----
-
-## QR-15 Time-to-Expiry Sensitivity
-
-Investigate
-
-How pricing changes as expiry approaches.
-
-Estimated Time
-
-**2 hours**
-
----
-
-## QR-16 Interest Rate Sensitivity
-
-Investigate
-
-Effect of changing interest rates.
-
-Estimated Time
-
-**2 hours**
+- Real option-chain data ingestion
+- Robust implied-volatility solver
+- Volatility smile plots
+- Optional volatility surface
+- Liquidity and no-arbitrage filtering
+- Short market-calibration report
 
 ---
 

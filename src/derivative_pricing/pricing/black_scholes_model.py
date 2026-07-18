@@ -26,39 +26,45 @@ class BlackScholesModel:
                 raise ValueError(f"Unsupported option type: {self.option.type}")
 
     def calculate_call(self) -> float:
-        """Calculate the Black-Scholes price of a European call option."""
-
-        return self.market.spot * norm.cdf(self.d1) - self.discounted_strike * norm.cdf(
-            self.d2
-        )
+        return self.discounted_spot * norm.cdf(
+            self.d1
+        ) - self.discounted_strike * norm.cdf(self.d2)
 
     def calculate_put(self) -> float:
-        """Calculate the Black-Scholes price of a European put option."""
-
         return self.discounted_strike * norm.cdf(
             -self.d2
-        ) - self.market.spot * norm.cdf(-self.d1)
+        ) - self.discounted_spot * norm.cdf(-self.d1)
 
     @property
-    def d1(self) -> float:
-        """Calculate the Black-Scholes d1 term."""
-        numerator = (
-            log(self.market.spot / self.option.strike)
-            + (self.market.risk_free_rate + 0.5 * self.market.volatility**2)
-            * self.option.maturity
+    def discounted_spot(self) -> float:
+        return self.market.spot * exp(
+            -self.market.dividend_yield * self.option.maturity
         )
-
-        denominator = self.market.volatility * sqrt(self.option.maturity)
-
-        return numerator / denominator
-
-    @property
-    def d2(self) -> float:
-        """Calculate the Black-Scholes d2 term."""
-        return self.d1 - self.market.volatility * sqrt(self.option.maturity)
 
     @property
     def discounted_strike(self) -> float:
         return self.option.strike * exp(
             -self.market.risk_free_rate * self.option.maturity
         )
+
+    @property
+    def d1(self) -> float:
+        maturity = self.option.maturity
+        volatility = self.market.volatility
+
+        numerator = (
+            log(self.market.spot / self.option.strike)
+            + (
+                self.market.risk_free_rate
+                - self.market.dividend_yield
+                + 0.5 * volatility**2
+            )
+            * maturity
+        )
+
+        return numerator / (volatility * sqrt(maturity))
+
+    @property
+    def d2(self) -> float:
+        """Calculate the Black-Scholes d2 term."""
+        return self.d1 - self.market.volatility * sqrt(self.option.maturity)

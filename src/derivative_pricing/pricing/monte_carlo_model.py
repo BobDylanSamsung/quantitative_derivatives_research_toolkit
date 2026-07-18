@@ -64,14 +64,11 @@ class MonteCarloModel:
 
     @property
     def terminal_drift(self) -> float:
-        """Return the deterministic component of terminal log returns.
-
-        Formula
-        -------
-        drift = (r - 0.5 * sigma**2) * T
-        """
+        """Return the deterministic component of terminal log returns."""
         return (
-            self.market.risk_free_rate - 0.5 * self.market.volatility**2
+            self.market.risk_free_rate
+            - self.market.dividend_yield
+            - 0.5 * self.market.volatility**2
         ) * self.option.maturity
 
     @property

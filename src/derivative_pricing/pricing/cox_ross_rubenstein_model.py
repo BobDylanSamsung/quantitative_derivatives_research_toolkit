@@ -48,15 +48,16 @@ class CoxRossRubinsteinModel:
     def risk_neutral_probability(self) -> float:
         """Return the risk-neutral probability of an up move.
 
-        Formula
-        -------
-        p = (exp(r * dt) - d) / (u - d)
 
         The resulting probability must lie between zero and one for the tree
         to be arbitrage-free.
         """
         return (
-            math.exp(self.market.risk_free_rate * self.time_step) - self.down_factor
+            math.exp(
+                (self.market.risk_free_rate - self.market.dividend_yield)
+                * self.time_step
+            )
+            - self.down_factor
         ) / (self.up_factor - self.down_factor)
 
     @property
