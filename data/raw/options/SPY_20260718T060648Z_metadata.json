@@ -1,0 +1,16 @@
+{
+  "symbol": "SPY",
+  "spot": 743.2899780273438,
+  "fetched_at_utc": "2026-07-18T06:06:48.276117+00:00",
+  "expirations": [
+    "2026-08-14",
+    "2026-10-16",
+    "2027-01-15"
+  ],
+  "target_days": [
+    30,
+    90,
+    180
+  ],
+  "source": "Yahoo Finance via yfinance"
+}

@@ -2,16 +2,14 @@ import math
 
 import pytest
 
-from derivative_pricing.models.market import MarketData
+from derivative_pricing.calibration.implied_volatility import ImpliedVolatilitySolver
+from derivative_pricing.models.market import CalibrationMarketData, MarketData
 from derivative_pricing.models.options import (
     EuropeanOption,
     OptionType,
 )
 from derivative_pricing.pricing.black_scholes_model import (
     BlackScholesModel,
-)
-from derivative_pricing.volatility.implied_volatility import (
-    ImpliedVolatilitySolver,
 )
 
 
@@ -89,10 +87,9 @@ def test_price_below_theoretical_lower_bound(
         type=option_type,
     )
 
-    market = MarketData(
+    market = CalibrationMarketData(
         spot=spot,
         risk_free_rate=0.05,
-        volatility=0.20,
         dividend_yield=0.01,
     )
 
@@ -138,10 +135,9 @@ def test_price_above_theoretical_upper_bound(
         type=option_type,
     )
 
-    market = MarketData(
+    market = CalibrationMarketData(
         spot=100.0,
         risk_free_rate=0.05,
-        volatility=0.20,
         dividend_yield=0.01,
     )
 
@@ -183,10 +179,9 @@ def test_expired_option(
         type=OptionType.CALL,
     )
 
-    market = MarketData(
+    market = CalibrationMarketData(
         spot=100.0,
         risk_free_rate=0.05,
-        volatility=0.20,
         dividend_yield=0.01,
     )
 

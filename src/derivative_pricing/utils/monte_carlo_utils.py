@@ -365,7 +365,7 @@ def plot_price_convergence(
     ax.axhline(
         black_scholes_price,
         linestyle="--",
-        label="Black–Scholes price",
+        label="Black-Scholes price",
     )
 
     ax.set_xscale("log")

@@ -1,9 +1,9 @@
 import math
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 
 from scipy.optimize import brentq
 
-from derivative_pricing.models.market import MarketData
+from derivative_pricing.models.market import CalibrationMarketData
 from derivative_pricing.models.options import EuropeanOption, OptionType
 from derivative_pricing.models.volatility import ImpliedVolatilityResult
 from derivative_pricing.pricing.black_scholes_model import (
@@ -41,7 +41,7 @@ class ImpliedVolatilitySolver:
     """
 
     option: EuropeanOption
-    market: MarketData
+    market: CalibrationMarketData
     market_price: float
 
     minimum_volatility: float = 1e-4
@@ -156,15 +156,7 @@ class ImpliedVolatilitySolver:
         return lower_bound, upper_bound
 
     def pricing_error(self, volatility: float) -> float:
-        """Return model price minus observed market price.
-
-        Brent's method searches for a volatility where this function
-        equals zero.
-        """
-        candidate_market = replace(
-            self.market,
-            volatility=volatility,
-        )
+        candidate_market = self.market.with_volatility(volatility)
 
         model_price = BlackScholesModel(
             option=self.option,
