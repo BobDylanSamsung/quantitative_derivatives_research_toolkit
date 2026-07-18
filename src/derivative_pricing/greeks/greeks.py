@@ -105,7 +105,7 @@ class BlackScholesGreeks:
             \Gamma
             =
             \frac{N'(d_1)}
-                 {S \sigma \sqrt{T}}
+            {S \sigma \sqrt{T}}
 
         where :math:`N'(d_1)` is the standard normal probability density
         function.
